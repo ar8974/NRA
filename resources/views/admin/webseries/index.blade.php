@@ -1,54 +1,59 @@
 @extends('layouts.admin')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">Web Series</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Web Series</h1>
 
-<a href="{{ route('admin.webseries.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">
-    Add New Web Series
-</a>
-
-<table class="table-auto w-full mt-4 border">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="px-4 py-2">ID</th>
-            <th class="px-4 py-2">Name</th>
-            <th class="px-4 py-2">Genre</th>
-            <th class="px-4 py-2">Production House</th>
-            <th class="px-4 py-2">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($webseries as $w)
-        <tr>
-            <td class="border px-4 py-2">{{ $w->Series_ID }}</td>
-            <td class="border px-4 py-2">{{ $w->Name }}</td>
-
-            {{-- show genres as comma-separated or badges --}}
-            <td class="border px-4 py-2">
-                @if($w->genres->isNotEmpty())
-                    @foreach($w->genres as $g)
-                        <span class="inline-block text-sm px-2 py-1 mr-1 rounded bg-gray-100 border">{{ $g->Name }}</span>
-                    @endforeach
-                @else
-                    <span class="text-gray-500">—</span>
-                @endif
-            </td>
-
-            <td class="border px-4 py-2">{{ $w->prodhouse->Name ?? 'N/A' }}</td>
-            <td class="border px-4 py-2">
-                <a href="{{ route('admin.webseries.show', $w->Series_ID) }}" class="text-blue-500">View</a> |
-                <a href="{{ route('admin.webseries.edit', $w->Series_ID) }}" class="text-green-500">Edit</a> |
-                <form action="{{ route('admin.webseries.destroy', $w->Series_ID) }}" method="POST" class="inline">
-                    @csrf @method('DELETE')
-                    <button class="text-red-500" onclick="return confirm('Delete?')">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="mt-4">
-    {{ $webseries->links() }}
+    <a href="{{ route('admin.webseries.create') }}" class="btn btn-primary">Add Web Series</a>
 </div>
+
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Genre</th>
+                <th>Production House</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($webseries as $w)
+            <tr>
+                <td>{{ $w->Series_ID }}</td>
+                <td>{{ $w->Name }}</td>
+                <td>
+                    @if($w->genres->isNotEmpty())
+                        @foreach($w->genres as $g)
+                            <span class="badge bg-light text-dark border me-1">{{ $g->Name }}</span>
+                        @endforeach
+                    @else
+                        <span class="text-muted">—</span>
+                    @endif
+                </td>
+                <td>{{ $w->prodhouse->Name ?? 'N/A' }}</td>
+                <td class="text-nowrap">
+                    <a href="{{ route('admin.webseries.show', $w->Series_ID) }}" class="btn btn-sm btn-outline-primary">View</a>
+                    <a href="{{ route('admin.webseries.edit', $w->Series_ID) }}" class="btn btn-sm btn-warning text-white">Edit</a>
+
+                    <form action="{{ route('admin.webseries.destroy', $w->Series_ID) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this record?');">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-3">
+    {{ $webseries->links('pagination::bootstrap-5') }}
+</div>
+
 @endsection

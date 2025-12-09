@@ -1,21 +1,21 @@
 @extends('layouts.admin')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-6">Add Genre</h1>
+<h1 class="h4 mb-4">Add Genre</h1>
 
-<form method="POST" action="{{ route('admin.genres.store') }}" class="space-y-4">
+<form method="POST" action="{{ route('admin.genres.store') }}">
     @csrf
 
-    <div>
-        <label class="block font-semibold">Genre ID</label>
-        <input type="number" name="Genre_ID" class="w-full border p-2 rounded">
+    <div class="mb-3">
+        <label class="form-label">Genre ID</label>
+        <input type="number" name="Genre_ID" class="form-control">
     </div>
 
-    <div>
-        <label class="block font-semibold">Genre Name</label>
-        <input type="text" name="Name" class="w-full border p-2 rounded">
+    <div class="mb-3">
+        <label class="form-label">Genre Name</label>
+        <input type="text" name="Name" class="form-control">
     </div>
 
-    <button class="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+    <button type="submit" class="btn btn-success">Save</button>
 </form>
 @endsection

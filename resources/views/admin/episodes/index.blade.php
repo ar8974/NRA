@@ -1,51 +1,51 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Episodes</h1>
-    <a href="{{ route('admin.episodes.create') }}"
-       class="bg-blue-600 text-white px-4 py-2 rounded">Add Episode</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Episodes</h1>
+
+    <a href="{{ route('admin.episodes.create') }}" class="btn btn-primary">Add Episode</a>
 </div>
 
 @if(session('success'))
-    <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
-        {{ session('success') }}
-    </div>
+    <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
-<table class="min-w-full bg-white shadow rounded">
-    <thead>
-        <tr class="border-b">
-            <th class="p-3 text-left">ID</th>
-            <th class="p-3 text-left">Name</th>
-            <th class="p-3 text-left">Series</th>
-            <th class="p-3 text-left">Number</th>
-            <th class="p-3 text-left">Actions</th>
-        </tr>
-    </thead>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Series</th>
+                <th>Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($episodes as $ep)
+            <tr>
+                <td>{{ $ep->Ep_ID }}</td>
+                <td>{{ $ep->Title }}</td>
+                <td>{{ $ep->webseries->Name ?? 'N/A' }}</td>
+                <td>{{ $ep->Ep_No }}</td>
+                <td class="text-nowrap">
+                    <a href="{{ route('admin.episodes.show', $ep) }}" class="btn btn-sm btn-outline-primary">View</a>
+                    <a href="{{ route('admin.episodes.edit', $ep) }}" class="btn btn-sm btn-warning text-white">Edit</a>
 
-    <tbody>
-        @foreach ($episodes as $ep)
-        <tr class="border-b hover:bg-gray-50">
-            <td class="p-3">{{ $ep->Ep_ID }}</td>
-            <td class="p-3">{{ $ep->Title }}</td>
-            <td class="p-3">{{ $ep->webseries->Name ?? 'N/A' }}</td>
-            <td class="p-3">{{ $ep->Ep_No }}</td>
-            <td class="p-3 flex gap-2">
-                <a href="{{ route('admin.episodes.show', $ep) }}" class="text-blue-600">View</a>
-                <a href="{{ route('admin.episodes.edit', $ep) }}" class="text-yellow-600">Edit</a>
-                <form action="{{ route('admin.episodes.destroy', $ep) }}" method="POST"
-                      onsubmit="return confirm('Delete this episode?')">
-                    @csrf @method('DELETE')
-                    <button class="text-red-600">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="mt-4">
-    {{ $episodes->links() }}
+                    <form action="{{ route('admin.episodes.destroy', $ep) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this episode?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
+
+<div class="mt-3">
+    {{ $episodes->links('pagination::bootstrap-5') }}
+</div>
+
 @endsection

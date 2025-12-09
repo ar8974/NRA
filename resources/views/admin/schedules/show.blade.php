@@ -1,19 +1,16 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Schedule Details</h1>
+<h1 class="h4 mb-3">Schedule Details</h1>
 
-    <div class="mb-4">
-        <strong>Episode:</strong> {{ $schedule->episode->Title ?? 'N/A' }}
+<div class="card mb-3">
+    <div class="card-body">
+        <p class="mb-2"><strong>Episode:</strong> {{ $schedule->episode->Title ?? 'N/A' }}</p>
+        <p class="mb-2"><strong>Air Date:</strong> {{ $schedule->Air_Date }}</p>
+        <p class="mb-0"><strong>Duration:</strong> {{ $schedule->Duration_Minutes }} minutes</p>
     </div>
-    <div class="mb-4">
-        <strong>Air Date:</strong> {{ $schedule->Air_Date }}
-    </div>
-    <div class="mb-4">
-        <strong>Duration:</strong> {{ $schedule->Duration_Minutes }} minutes
-    </div>
-
-    <a href="{{ route('admin.schedules.index') }}" class="px-4 py-2 rounded border">Back</a>
 </div>
+
+<a href="{{ route('admin.schedules.index') }}" class="btn btn-secondary">Back</a>
+
 @endsection

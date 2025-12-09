@@ -1,52 +1,61 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Viewers</h1>
-    <a href="{{ route('admin.viewers.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">
-        Add Viewer
-    </a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Viewers</h1>
+
+    <a href="{{ route('admin.viewers.create') }}" class="btn btn-primary">Add Viewer</a>
 </div>
 
 @if(session('success'))
-    <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
-        {{ session('success') }}
-    </div>
+    <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
-<table class="min-w-full bg-white shadow rounded">
-    <thead>
-        <tr class="border-b">
-            <th class="p-3 text-left">ID</th>
-            <th class="p-3 text-left">First Name</th>
-            <th class="p-3 text-left">Last Name</th>
-            <th class="p-3 text-left">Street</th>
-            <th class="p-3 text-left">City</th>
-            <th class="p-3 text-left">ZIP</th>
-            <th class="p-3 text-left">Account Date</th>
-            <th class="p-3 text-left">Monthly Charge</th>
-            <th class="p-3 text-left">Country</th>
-        </tr>
-    </thead>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>ZIP</th>
+                <th>Account Date</th>
+                <th>Monthly Charge</th>
+                <th>Country</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($viewers as $viewer)
+            <tr>
+                <td>{{ $viewer->View_ID }}</td>
+                <td>{{ $viewer->F_Name }}</td>
+                <td>{{ $viewer->L_Name }}</td>
+                <td>{{ $viewer->Street }}</td>
+                <td>{{ $viewer->City }}</td>
+                <td>{{ $viewer->ZIP }}</td>
+                <td>{{ $viewer->Acc_date }}</td>
+                <td>${{ number_format($viewer->Monthly_Charge, 2) }}</td>
+                <td>{{ $viewer->country->Country ?? 'N/A' }}</td>
+                <td class="text-nowrap">
+                    <a href="{{ route('admin.viewers.show', $viewer->View_ID) }}" class="btn btn-sm btn-outline-primary">View</a>
+                    <a href="{{ route('admin.viewers.edit', $viewer->View_ID) }}" class="btn btn-sm btn-warning text-white">Edit</a>
 
-    <tbody>
-        @foreach($viewers as $viewer)
-        <tr class="border-b hover:bg-gray-50">
-            <td class="p-3">{{ $viewer->View_ID }}</td>
-            <td class="p-3">{{ $viewer->F_Name }}</td>
-            <td class="p-3">{{ $viewer->L_Name }}</td>
-            <td class="p-3">{{ $viewer->Street }}</td>
-            <td class="p-3">{{ $viewer->City }}</td>
-            <td class="p-3">{{ $viewer->ZIP }}</td>
-            <td class="p-3">{{ $viewer->Acc_date }}</td>
-            <td class="p-3">${{ number_format($viewer->Monthly_Charge, 2) }}</td>
-            <td class="p-3">{{ $viewer->country->Country ?? 'N/A' }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="mt-4">
-    {{ $viewers->links() }}
+                    <form action="{{ route('admin.viewers.destroy', $viewer->View_ID) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this viewer?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
+
+<div class="mt-3">
+    {{ $viewers->links('pagination::bootstrap-5') }}
+</div>
+
 @endsection
