@@ -26,6 +26,7 @@
           <a href="{{ route('admin.schedules.index') }}" class="nav-link">Schedules</a>
           <a href="{{ route('admin.contracts.index') }}" class="nav-link">Contracts</a>
           <a href="{{ route('admin.feedback.index') }}" class="nav-link">Feedback</a>
+          <a href="{{ route('admin.analytics.index') }}" class="nav-link">Analytics Dashboard</a>
         </nav>
       </aside>
 
