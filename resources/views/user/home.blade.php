@@ -1,27 +1,52 @@
 @extends('layouts.user')
-@section('content')
-  <div class="mb-6">
-    <div class="relative h-72 rounded overflow-hidden">
-      <img src="https://picsum.photos/1200/400?random=1" class="w-full h-full object-cover opacity-80" />
-      <div class="absolute left-8 bottom-8">
-        <h2 class="text-4xl font-bold">{{ $featured->Name ?? 'Featured' }}</h2>
-        <p class="mt-2 text-gray-200">Release: {{ optional($featured)->Release }}</p>
-      </div>
-    </div>
-  </div>
 
-  <div>
-    <h3 class="text-2xl font-semibold mb-4">Latest</h3>
-    <div class="grid grid-cols-5 gap-4">
-      @foreach($rows as $r)
-        <a href="{{ route('series.show', $r->Series_ID) }}" class="block bg-black/60 rounded overflow-hidden">
-          <div class="h-40 bg-gray-700 flex items-center justify-center">{{ $r->Name }}</div>
-          <div class="p-2">
-            <div class="text-sm">{{ $r->Name }}</div>
-            <div class="text-xs text-gray-400">{{ $r->Country }}</div>
-          </div>
-        </a>
-      @endforeach
-    </div>
-  </div>
+@section('content')
+
+    {{-- IMPROVED HERO SECTION: High impact, full height (70vh), and a clear call to action --}}
+    <section class="relative h-[70vh] w-full">
+        {{-- Image with opacity for better text readability --}}
+        <img
+            src="https://picsum.photos/1920/1080?random=1"
+            class="absolute inset-0 w-full h-full object-cover opacity-60"
+        >
+
+        {{-- Content positioned at the bottom-left --}}
+        <div class="absolute bottom-20 left-10 max-w-xl">
+            <h1 class="text-5xl font-bold">{{ $featured->Name ?? 'Featured Series' }}</h1>
+            <p class="mt-4 text-lg text-gray-300">
+                Release: {{ optional($featured)->Release }}
+            </p>
+
+            {{-- Prominent red "Play" button style --}}
+            <a href="{{ route('series.show', optional($featured)->Series_ID) }}" class="mt-6 bg-red-600 px-6 py-2 rounded text-lg inline-block hover:bg-red-700 transition">
+                View Series
+            </a>
+        </div>
+    </section>
+
+    {{-- IMPROVED LATEST SERIES ROW: Uses horizontal scrolling for content browsing --}}
+    <section class="mt-10">
+        <h2 class="text-2xl font-semibold mb-4">Latest</h2>
+
+        {{-- Horizontal scroll container (flex gap-4 overflow-x-auto) --}}
+        <div class="flex gap-4 overflow-x-auto pb-4">
+            @foreach($rows as $r)
+                {{-- Use flex-shrink-0 and fixed width (w-48) to enforce horizontal scrolling --}}
+                <a href="{{ route('series.show', $r->Series_ID) }}"
+                   class="flex-shrink-0 w-48 block bg-gray-800 rounded overflow-hidden hover:scale-[1.02] transition-transform duration-200">
+                    
+                    {{-- Placeholder for Poster/Thumbnail --}}
+                    <div class="w-full h-64 bg-gray-700 flex items-center justify-center text-center p-2">
+                         <span class="text-sm text-gray-400">{{ $r->Name }} Poster</span>
+                    </div>
+                    
+                    <div class="p-3">
+                        <div class="text-md font-semibold truncate">{{ $r->Name }}</div>
+                        <div class="text-xs text-gray-400">{{ $r->Country }}</div>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </section>
+
 @endsection

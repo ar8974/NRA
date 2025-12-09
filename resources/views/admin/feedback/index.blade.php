@@ -10,7 +10,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
-<div class="card">
+<!-- <div class="card"> -->
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -43,7 +43,7 @@
                 {{ $feedbacks->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </div>
 
 @endsection
