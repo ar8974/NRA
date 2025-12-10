@@ -21,6 +21,21 @@ class NraScheduleController extends Controller
         return view('admin.schedules.create', compact('episodes'));
     }
 
+    // In App\Http\Controllers\Admin\NraScheduleController.php
+
+public function show(string $id)
+{
+    // Retrieve the schedule record by its ID.
+    // Assuming your Schedule model is named 'Schedule'.
+    // $schedule = \App\Models\Schedule::findOrFail($id); 
+    $schedule = \App\Models\NraSchedule::findOrFail($id);
+
+    // Return a view, passing the schedule data.
+    return view('admin.schedules.show', [
+        'schedule' => $schedule,
+    ]);
+}
+
     public function store(Request $request)
     {
         $request->validate([

@@ -1,21 +1,19 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Production House Details</h1>
+<h1 class="h4 mb-3">Production House Details</h1>
 
-    <ul class="space-y-2">
-        <li><strong>House ID:</strong> {{ $prodhouse->House_ID }}</li>
-        <li><strong>Name:</strong> {{ $prodhouse->Name }}</li>
-        <li><strong>Street:</strong> {{ $prodhouse->Street }}</li>
-        <li><strong>City:</strong> {{ $prodhouse->City }}</li>
-        <li><strong>ZIP:</strong> {{ $prodhouse->ZIP }}</li>
-        <li><strong>Year Established:</strong> {{ $prodhouse->Year_Est }}</li>
-        <li><strong>Country Code:</strong> {{ $prodhouse->Country_Code }}</li>
-    </ul>
-
-    <div class="mt-4">
-        <a href="{{ route('admin.prodhouses.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</a>
+<div class="card mb-3">
+    <div class="card-body">
+        <p class="mb-2"><strong>House ID:</strong> {{ $prodhouse->House_ID }}</p>
+        <p class="mb-2"><strong>Name:</strong> {{ $prodhouse->Name }}</p>
+        <p class="mb-2"><strong>Street:</strong> {{ $prodhouse->Street }}</p>
+        <p class="mb-2"><strong>City:</strong> {{ $prodhouse->City }}</p>
+        <p class="mb-2"><strong>ZIP:</strong> {{ $prodhouse->ZIP }}</p>
+        <p class="mb-2"><strong>Year Established:</strong> {{ $prodhouse->Year_Est }}</p>
+        <p class="mb-0"><strong>Country Code:</strong> {{ $prodhouse->Country_Code }}</p>
     </div>
 </div>
+
+<a href="{{ route('admin.prodhouses.index') }}" class="btn btn-secondary">Back</a>
 @endsection

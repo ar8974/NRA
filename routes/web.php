@@ -17,6 +17,10 @@ use App\Http\Controllers\Admin\NraFeedbackController;
 
 use App\Http\Controllers\User\ShowController;
 use App\Http\Controllers\User\CategoryController;
+use App\Http\Controllers\Admin\AnalyticsController;
+
+// Route to the new Analytics Dashboard
+Route::get('admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics.index');
 
 Route::get('/', function () {
     return view('home');

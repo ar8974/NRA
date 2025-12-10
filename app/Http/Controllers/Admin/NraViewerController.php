@@ -15,6 +15,18 @@ class NraViewerController extends Controller
         return view('admin.viewers.index', compact('viewers'));
     }
 
+    /**
+     * Display the specified viewer.
+     *
+     * @param  \App\Models\NraViewer  $viewer
+     * @return \Illuminate\Http\Response
+     */
+    public function show(NraViewer $viewer)
+    {
+        // This resolves the bug. It loads the viewer details and passes them to the view.
+        return view('admin.viewers.show', compact('viewer'));
+    }
+
     public function create()
     {
         $countries = NraCountry::all();

@@ -58,9 +58,31 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            // Build PDO options in a PHP-version-safe way to avoid
+            // deprecated constant warnings (PHP 8.5+ moves the constant).
+            'options' => (function () {
+                if (! extension_loaded('pdo_mysql')) {
+                    return [];
+                }
+
+                $options = [];
+
+                // Prefer the original PDO constant when available, fall back
+                // to the newer Pdo\Mysql::ATTR_SSL_CA when present (PHP 8.5+).
+                if (defined('PDO::MYSQL_ATTR_SSL_CA')) {
+                    $const = PDO::MYSQL_ATTR_SSL_CA;
+                } elseif (defined('Pdo\\Mysql::ATTR_SSL_CA')) {
+                    $const = \Pdo\Mysql::ATTR_SSL_CA;
+                } else {
+                    $const = null;
+                }
+
+                if ($const !== null) {
+                    $options[$const] = env('MYSQL_ATTR_SSL_CA');
+                }
+
+                return array_filter($options);
+            })(),
         ],
 
         'mariadb' => [
